@@ -1,0 +1,42 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: fluxcommerce_php_test
+    volumes:
+      - .:/var/www/html
+    environment:
+      APP_ENV: test
+      DATABASE_URL: postgresql://fluxcommerce:secret@postgres_test:5432/fluxcommerce_test?serverVersion=16&charset=utf8
+    depends_on:
+      postgres_test:
+        condition: service_healthy
+    networks:
+      - fluxcommerce_test
+    command: >
+      sh -c "composer install --no-interaction &&
+             php bin/console doctrine:database:create --if-not-exists --env=test &&
+             php bin/console doctrine:migrations:migrate --no-interaction --env=test &&
+             php bin/phpunit"
+
+  postgres_test:
+    image: postgres:16-alpine
+    container_name: fluxcommerce_postgres_test
+    environment:
+      POSTGRES_DB: fluxcommerce_test
+      POSTGRES_USER: fluxcommerce
+      POSTGRES_PASSWORD: secret
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fluxcommerce"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fluxcommerce_test
+
+networks:
+  fluxcommerce_test:
+    driver: bridge

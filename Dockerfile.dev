@@ -1,0 +1,28 @@
+FROM php:8.2-fpm-alpine
+
+RUN apk add --no-cache \
+    git \
+    unzip \
+    curl \
+    icu-dev \
+    libpq-dev \
+    libzip-dev \
+    oniguruma-dev \
+    nodejs \
+    npm \
+    && docker-php-ext-install \
+        intl \
+        pdo_pgsql \
+        zip \
+        opcache \
+    && pecl install apcu xdebug \
+    && docker-php-ext-enable apcu xdebug
+
+COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+COPY docker/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+EXPOSE 9000
+CMD ["php-fpm"]
