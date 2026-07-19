@@ -3,4 +3,4 @@ parameters:
     paths:
         - src
     doctrine:
-        objectManagerLoader: tests/bootstrap.php
+        objectManagerLoader: tests/object-manager.php
