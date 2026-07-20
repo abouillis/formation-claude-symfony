@@ -40,40 +40,33 @@ checkout(Cart $cart): Order       // crée une Order à partir du panier, passe 
 
 ## Étapes suggérées
 
-1. Générer les entités avec Claude (prompt RCTF) :
-   ```
-   Rôle : Dev Symfony 7.2 / PHP 8.3 / Doctrine ORM 3 senior, ERP B2B.
-   Contexte : Projet FluxCommerce — namespace App\Order, conventions UUID Ramsey non utilisées ici
-              (auto-increment classique), declare(strict_types=1), attributs Doctrine PHP 8.
-   Tâche : Génère CartStatus (enum string), Entity Cart et Entity CartItem
-           selon les specs dans EXERCICE.md. Namespace App\Order\{Entity,Enum}.
-   Format : 3 fichiers PHP complets avec tous les getters + constructeur strict.
-   ```
+**À vous de construire chaque prompt en RCTF complet** (Rôle / Contexte / Tâche / Format) —
+c'est l'objet de l'exercice. Les specs ci-dessus vous donnent la matière ; à vous de les
+formuler correctement pour Claude.
 
-2. Générer `CartService` :
-   ```
-   [même rôle/contexte]
-   Tâche : Génère CartService (App\Order\Service\CartService) avec les 5 méthodes
-           définies dans EXERCICE.md. La méthode checkout() crée une Order Doctrine.
-   Format : Service PHP injectant EntityManagerInterface, sans setters superflus.
-   ```
+1. **Générer les entités** — construisez un prompt RCTF qui couvre :
+   - Rôle : quelle stack, quel niveau d'expertise attendu ?
+   - Contexte : quel projet, quel namespace, quelles conventions (strict_types, attributs
+     Doctrine PHP 8, pas d'UUID Ramsey ici) ?
+   - Tâche : les 3 éléments à générer (enum `CartStatus`, entités `Cart` et `CartItem`)
+     selon les specs ci-dessus
+   - Format : combien de fichiers, avec quoi dedans (getters, constructeur strict…) ?
 
-3. Générer la migration :
+2. **Générer `CartService`** — même logique RCTF, en précisant les 5 méthodes de la
+   section "Service CartService" ci-dessus et la dépendance à injecter.
+
+3. **Générer la migration** :
    ```bash
    php bin/console doctrine:migrations:diff
    ```
 
-4. Générer les tests unitaires de `CartService` (prompt RCTF) :
-   ```
-   Rôle : Dev Symfony 7.2 / PHP 8.3 / PHPUnit 11 senior, TDD.
-   Contexte : CartService (App\Order\Service\CartService) vient d'être généré,
-              voir son code ci-dessus/dans le fichier.
-   Tâche : Génère les tests unitaires pour les 5 méthodes de CartService
-           (addItem, removeItem, getTotal, clear, checkout).
-           Mock EntityManagerInterface.
-   Format : tests/Unit/Order/Service/CartServiceTest.php, use statements inclus.
-   ```
+4. **Générer les tests unitaires** de `CartService` — construisez un prompt RCTF qui
+   précise : le framework de test, la stratégie de mock pour `EntityManagerInterface`,
+   les 5 méthodes à couvrir, et l'emplacement du fichier de test.
    *(Le Jour 2 vous présentera le Skill `/gen-test`, qui automatise ce même prompt.)*
+
+**Après l'exercice** : le formateur vous montrera un exemple de prompt RCTF de référence
+en debriefing — comparez-le au vôtre avant de continuer.
 
 ## Critère de succès
 
