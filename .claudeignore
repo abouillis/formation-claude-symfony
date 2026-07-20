@@ -1,0 +1,6 @@
+/.env
+/.env.*
+/var/
+/vendor/
+*.log
+config/secrets/
