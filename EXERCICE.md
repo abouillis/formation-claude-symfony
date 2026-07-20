@@ -63,7 +63,17 @@ checkout(Cart $cart): Order       // crée une Order à partir du panier, passe 
    php bin/console doctrine:migrations:diff
    ```
 
-4. Utiliser `/gen-test` pour les tests unitaires de `CartService`
+4. Générer les tests unitaires de `CartService` (prompt RCTF) :
+   ```
+   Rôle : Dev Symfony 7.2 / PHP 8.3 / PHPUnit 11 senior, TDD.
+   Contexte : CartService (App\Order\Service\CartService) vient d'être généré,
+              voir son code ci-dessus/dans le fichier.
+   Tâche : Génère les tests unitaires pour les 5 méthodes de CartService
+           (addItem, removeItem, getTotal, clear, checkout).
+           Mock EntityManagerInterface.
+   Format : tests/Unit/Order/Service/CartServiceTest.php, use statements inclus.
+   ```
+   *(Le Jour 2 vous présentera le Skill `/gen-test`, qui automatise ce même prompt.)*
 
 ## Critère de succès
 
